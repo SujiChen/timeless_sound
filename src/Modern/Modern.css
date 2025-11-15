@@ -1,6 +1,6 @@
-
+/* Modern page fills full viewport */
 .modern-page {
-  height: 100%;
+  height: 100vh; /* full viewport height */
   width: 100%;
   background: #111;
   display: flex;
