@@ -7,29 +7,20 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 export default function Header() {
     return(
         <div className="header">
-                <className className="top">
-                    <Link to="/" className="name" >Timeless Sound</Link>
-                    
-                    {/* <div className="logo">
-                        <div> <Card url="https://github.com/yourusername" title="" IconComponent={FaGithub} hover={false} /></div>
+            <div className="top">
+                <Link to="/" className="name">Timeless Sound</Link>
 
-                        <div> <Card url="https://github.com/yourusername" title="" IconComponent={FaLinkedin} hover={false} /></div>
-                    </div> */}
+                <nav className="nav">
+                    <ul>
+                        <li><Link to="/Retro" className="nav-link">Retros</Link></li>
+                        <li><Link to="/Modern" className="nav-link">Modern</Link></li>
+                    </ul>
+                </nav>
 
-                </className>
-
-
-            {/* <nav className="nav">
-                <ul>
-                <li><Link to="/" className="nav-link">Home</Link></li>
-                <li><Link to="/projects" className="nav-link">Projects</Link></li>
-                <li><Link to="/about" className="nav-link">About</Link></li>
-                <li><Link to="/contact" className="nav-link">Contact</Link></li>
-                </ul>
-            </nav> */}
-
-            
+                <div className="logo">
+                    <div>Listen</div>
+                </div>
+            </div>
         </div>
     )
-
 }

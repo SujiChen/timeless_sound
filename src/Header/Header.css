@@ -4,7 +4,7 @@
   justify-content: space-between;
   align-items: left;
   padding: 10px 30px;
-  background-color: rgba(255, 255, 255, 0.558);;
+  background-color: rgba(0, 0, 0, 0.848);;
   color: rgb(0, 0, 0);
   flex-direction: column;
   
@@ -19,8 +19,6 @@
   height: 80px; 
   z-index: 1000;
   
-
-  
 }
 
 .top {
@@ -30,41 +28,56 @@
   color: rgb(0, 0, 0);
   margin-top: 0;
   padding-top: 0;
+  place-items: center; 
 
   .name{
     font-size: 1.5rem;
-    color: rgb(0, 0, 0);
+    color: #ff0000;
 
+  }
+
+  .nav {
+    flex: 1;               /* take remaining space */
+    display: flex;         
+    justify-content: center;  /* center Retros + Modern */
+  }
+
+
+  .nav ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    margin: 0;
+    padding: 10px 0px;
+    justify-content: center;
+  }
+  
+  .nav-link {
+    color: rgb(208, 205, 205);
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: #ffbdbd;
   }
 
   .logo{
     cursor: pointer;
-    margin: 0;
+    /* margin: 0; */
+    padding-left: 0px;
     display: flex;
     font-size: 1rem;
     gap: 15px;
+  
+    color: #ff0000;
+  
+    border: 2px solid #ff0000; /* Sets a 2px solid border with a dark gray color */
+    padding: 10px; /* Adds 15px of padding around the text */
+    margin: 10px; /* Adds 10px of margin outside the box */
+    border-radius: 5px; /* Rounds the corners of the box */
   }
-
-
 }
 
 
-.nav ul {
-  list-style: none;
-  display: flex;
-  gap: 25px;
-  margin: 0;
-  padding: 10px 0px;
-  justify-content: center;
-}
-
-.nav-link {
-  color: rgb(0, 0, 0);
-  text-decoration: none;
-  font-size: 1.1rem;
-  transition: color 0.3s ease;
-}
-
-.nav-link:hover {
-    color: #bddfff;
-}
