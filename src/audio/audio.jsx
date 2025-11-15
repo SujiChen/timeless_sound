@@ -8,6 +8,7 @@ export default function AudioConverter() {
   const [processing, setProcessing] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState(null);
   const [format, setFormat] = useState("wav");
+  const [activeEffect, setActiveEffect] = useState(null);
 
   const audioBufferRef = useRef(null);
   const processedAudioUrlRef = useRef(null);
@@ -83,11 +84,12 @@ export default function AudioConverter() {
     return new Blob([view], { type: "audio/wav" });
   }
 
-  async function buildAndRender(effectBuilder, rate) {
+  async function buildAndRender(effectBuilder, rate, effectName) {
     if (!audioBufferRef.current) return;
 
     setProcessing(true);
     setStatus("Rendering...");
+    setActiveEffect(effectName);
 
     const orig = audioBufferRef.current;
     const newDuration = orig.duration / Math.abs(rate);
@@ -610,6 +612,7 @@ export default function AudioConverter() {
   function handleClear() {
     setFileName(null);
     setStatus("No file loaded");
+    setActiveEffect(null);
     audioBufferRef.current = null;
     if (downloadUrl) URL.revokeObjectURL(downloadUrl);
     setDownloadUrl(null);
@@ -656,21 +659,21 @@ export default function AudioConverter() {
       <div className="effect-grid">
         <h3 style={{gridColumn: '1 / -1', fontSize: '16px', fontWeight: '600', marginBottom: '4px', marginTop: '8px', color: '#4f46e5'}}>🕹️ RETRO</h3>
         
-        <button className="effect-button" disabled={!fileName || processing} onClick={() => buildAndRender(effectPCSpeaker, 1)}>💾 PC Speaker</button>
-        <button className="effect-button" disabled={!fileName || processing} onClick={() => buildAndRender(effect8Bit, 1)}>🎮 8-bit (NES)</button>
-        <button className="effect-button" disabled={!fileName || processing} onClick={() => buildAndRender(effectArcade, 1)}>🏁 Arcade</button>
-        <button className="effect-button" disabled={!fileName || processing} onClick={() => buildAndRender(effectFMSynth, 1)}>🧿 FM Synth</button>
-        <button className="effect-button" disabled={!fileName || processing} onClick={() => buildAndRender(effect16Bit, 1)}>🕹️ 16-bit (SNES)</button>
-        <button className="effect-button" disabled={!fileName || processing} onClick={() => buildAndRender(effectBardcore, 0.92)}>🏰 Bardcore</button>
+        <button className="effect-button" style={{background: activeEffect === 'pcspeaker' ? '#4f46e5' : '#f8f8f8', color: activeEffect === 'pcspeaker' ? 'white' : 'inherit'}} disabled={!fileName || processing} onClick={() => buildAndRender(effectPCSpeaker, 1, 'pcspeaker')}>💾 PC Speaker</button>
+        <button className="effect-button" style={{background: activeEffect === '8bit' ? '#4f46e5' : '#f8f8f8', color: activeEffect === '8bit' ? 'white' : 'inherit'}} disabled={!fileName || processing} onClick={() => buildAndRender(effect8Bit, 1, '8bit')}>🎮 8-bit (NES)</button>
+        <button className="effect-button" style={{background: activeEffect === 'arcade' ? '#4f46e5' : '#f8f8f8', color: activeEffect === 'arcade' ? 'white' : 'inherit'}} disabled={!fileName || processing} onClick={() => buildAndRender(effectArcade, 1, 'arcade')}>🏁 Arcade</button>
+        <button className="effect-button" style={{background: activeEffect === 'fmsynth' ? '#4f46e5' : '#f8f8f8', color: activeEffect === 'fmsynth' ? 'white' : 'inherit'}} disabled={!fileName || processing} onClick={() => buildAndRender(effectFMSynth, 1, 'fmsynth')}>🧿 FM Synth</button>
+        <button className="effect-button" style={{background: activeEffect === '16bit' ? '#4f46e5' : '#f8f8f8', color: activeEffect === '16bit' ? 'white' : 'inherit'}} disabled={!fileName || processing} onClick={() => buildAndRender(effect16Bit, 1, '16bit')}>🕹️ 16-bit (SNES)</button>
+        <button className="effect-button" style={{background: activeEffect === 'lofi' ? '#4f46e5' : '#f8f8f8', color: activeEffect === 'lofi' ? 'white' : 'inherit'}} disabled={!fileName || processing} onClick={() => buildAndRender(effectLofi, 1, 'lofi')}>📻 Lofi</button>
+        <button className="effect-button" style={{background: activeEffect === 'bardcore' ? '#4f46e5' : '#f8f8f8', color: activeEffect === 'bardcore' ? 'white' : 'inherit'}} disabled={!fileName || processing} onClick={() => buildAndRender(effectBardcore, 0.92, 'bardcore')}>🏰 Bardcore</button>
         
         <h3 style={{gridColumn: '1 / -1', fontSize: '16px', fontWeight: '600', marginBottom: '4px', marginTop: '16px', color: '#ec4899'}}>✨ MODERN</h3>
         
-        <button className="effect-button" disabled={!fileName || processing} onClick={() => buildAndRender(effectBassBoosted, 1)}>🔊 Bass Boosted</button>
-        <button className="effect-button" disabled={!fileName || processing} onClick={() => buildAndRender(effectSynthwave, 1)}>📼 Synthwave</button>
-        <button className="effect-button" disabled={!fileName || processing} onClick={() => buildAndRender(effectNightcore, 1.3)}>⚡ Nightcore</button>
-        <button className="effect-button" disabled={!fileName || processing} onClick={() => buildAndRender(effectSlowedReverb, 0.85)}>🌙 Slowed + Reverb</button>
-        <button className="effect-button" disabled={!fileName || processing} onClick={() => buildAndRender(effectOrchestral, 1)}>🎻 Orchestral</button>
-        <button className="effect-button" disabled={!fileName || processing} onClick={() => buildAndRender(effectLofi, 1)}>📻 Lofi</button>
+        <button className="effect-button" style={{background: activeEffect === 'bassboosted' ? '#ec4899' : '#f8f8f8', color: activeEffect === 'bassboosted' ? 'white' : 'inherit'}} disabled={!fileName || processing} onClick={() => buildAndRender(effectBassBoosted, 1, 'bassboosted')}>🔊 Bass Boosted</button>
+        <button className="effect-button" style={{background: activeEffect === 'synthwave' ? '#ec4899' : '#f8f8f8', color: activeEffect === 'synthwave' ? 'white' : 'inherit'}} disabled={!fileName || processing} onClick={() => buildAndRender(effectSynthwave, 1, 'synthwave')}>📼 Synthwave</button>
+        <button className="effect-button" style={{background: activeEffect === 'nightcore' ? '#ec4899' : '#f8f8f8', color: activeEffect === 'nightcore' ? 'white' : 'inherit'}} disabled={!fileName || processing} onClick={() => buildAndRender(effectNightcore, 1.3, 'nightcore')}>⚡ Nightcore</button>
+        <button className="effect-button" style={{background: activeEffect === 'slowedreverb' ? '#ec4899' : '#f8f8f8', color: activeEffect === 'slowedreverb' ? 'white' : 'inherit'}} disabled={!fileName || processing} onClick={() => buildAndRender(effectSlowedReverb, 0.85, 'slowedreverb')}>🌙 Slowed + Reverb</button>
+        <button className="effect-button" style={{background: activeEffect === 'orchestral' ? '#ec4899' : '#f8f8f8', color: activeEffect === 'orchestral' ? 'white' : 'inherit'}} disabled={!fileName || processing} onClick={() => buildAndRender(effectOrchestral, 1, 'orchestral')}>🎻 Orchestral</button>
       </div>
 
       {processedAudioUrlRef.current && (
