@@ -1,0 +1,171 @@
+.converter-container {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  font-family: sans-serif;
+}
+
+.converter-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.converter-description {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+/* File input */
+.hidden-input {
+  display: none;
+}
+
+/* File row */
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.file-button {
+  padding: 10px 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f3f3f3;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.file-button:hover {
+  background: #e7e7e7;
+}
+
+.file-button.choose-file {
+  background: #4f46e5;
+  color: white;
+  border: none;
+}
+
+.file-button.choose-file:hover {
+  background: #4338ca;
+}
+
+.status-text {
+  margin-left: auto;
+  font-size: 14px;
+  color: #444;
+}
+
+/* Loaded info */
+.loaded-info {
+  font-size: 14px;
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.player-section {
+  margin-top: 8px;
+}
+
+.player-label {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.audio-player {
+  width: 100%;
+  height: 32px;
+}
+
+/* Grid buttons */
+.effect-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.effect-button {
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f8f8f8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.effect-button:hover:not(:disabled) {
+  background: #e5e7eb;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.effect-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Processed section */
+.processed-section {
+  padding: 12px;
+  background: #f0fdf4;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+/* Download section */
+.download-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.download-button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  background: #16a34a;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-family: inherit;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.download-button:hover:not(:disabled) {
+  background: #15803d;
+}
+
+.download-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #ccc;
+}
+
+/* Notes */
+.notes {
+  margin-top: 16px;
+  font-size: 12px;
+  color: #666;
+}
+
+.notes p {
+  margin: 0;
+}
