@@ -1,0 +1,339 @@
+import React, { useState, useRef, useEffect } from 'react';
+
+/**
+ * AudioPlayerCoreModern - Minimal audio player with modern effects only
+ */
+export default function ModernAudioCore() {
+  const [audioFile, setAudioFile] = useState(null);
+  const [audioBuffer, setAudioBuffer] = useState(null);
+  const [processedUrl, setProcessedUrl] = useState(null);
+  const [originalUrl, setOriginalUrl] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(1);
+  const [activeEffect, setActiveEffect] = useState(null);
+  const [processing, setProcessing] = useState(false);
+
+  const audioRef = useRef(null);
+  const intervalRef = useRef(null);
+
+  // ===== FILE UPLOAD =====
+  async function handleFileUpload(file) {
+    if (!file) return;
+    try {
+      setAudioFile(file);
+      const arrayBuffer = await file.arrayBuffer();
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const decoded = await audioContext.decodeAudioData(arrayBuffer);
+      setAudioBuffer(decoded);
+
+      const url = URL.createObjectURL(file);
+      setOriginalUrl(url);
+      return { success: true, duration: decoded.duration };
+    } catch (error) {
+      console.error('Failed to load audio:', error);
+      return { success: false, error };
+    }
+  }
+
+  // ===== PLAYBACK =====
+  function play() {
+    if (audioRef.current) {
+      audioRef.current.play();
+      setIsPlaying(true);
+      startTimeTracking();
+    }
+  }
+
+  function pause() {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+      stopTimeTracking();
+    }
+  }
+
+  function togglePlayPause() {
+    isPlaying ? pause() : play();
+  }
+
+  function skipForward(seconds = 10) {
+    if (audioRef.current) {
+      audioRef.current.currentTime = Math.min(
+        audioRef.current.currentTime + seconds,
+        audioRef.current.duration
+      );
+    }
+  }
+
+  function skipBackward(seconds = 10) {
+    if (audioRef.current) {
+      audioRef.current.currentTime = Math.max(audioRef.current.currentTime - seconds, 0);
+    }
+  }
+
+  function seekTo(timeInSeconds) {
+    if (audioRef.current) {
+      audioRef.current.currentTime = timeInSeconds;
+      setCurrentTime(timeInSeconds);
+    }
+  }
+
+  function changeVolume(volumeLevel) {
+    if (audioRef.current) {
+      const vol = Math.max(0, Math.min(1, volumeLevel));
+      audioRef.current.volume = vol;
+      setVolume(vol);
+    }
+  }
+
+  function toggleMute() {
+    if (audioRef.current) audioRef.current.muted = !audioRef.current.muted;
+  }
+
+  function formatTime(seconds) {
+    if (isNaN(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  function getTimeRemaining() {
+    return formatTime(duration - currentTime);
+  }
+
+  function getCurrentTimeFormatted() {
+    return formatTime(currentTime);
+  }
+
+  // ===== MODERN EFFECTS =====
+  async function applyModernEffect(effectName, playbackRate = 1) {
+    if (!audioBuffer) return;
+    setProcessing(true);
+
+    try {
+      const modernEffects = {
+        'bassboosted': effectBassBoosted,
+        'synthwave': effectSynthwave,
+        'nightcore': effectNightcore,
+        'slowedreverb': effectSlowedReverb,
+        'orchestral': effectOrchestral,
+      };
+      const effectFunc = modernEffects[effectName];
+      if (!effectFunc) return;
+
+      const newDuration = audioBuffer.duration / Math.abs(playbackRate);
+      const offlineCtx = new OfflineAudioContext(
+        audioBuffer.numberOfChannels,
+        Math.ceil(newDuration * 44100),
+        44100
+      );
+
+      const src = offlineCtx.createBufferSource();
+      src.buffer = audioBuffer;
+      src.playbackRate.value = playbackRate;
+
+      await effectFunc(offlineCtx, src);
+      src.start();
+
+      const blob = await renderToWav(offlineCtx);
+      const url = URL.createObjectURL(blob);
+
+      if (processedUrl) URL.revokeObjectURL(processedUrl);
+      setProcessedUrl(url);
+      setActiveEffect(effectName);
+
+      return { success: true, url };
+    } catch (error) {
+      console.error('Effect failed:', error);
+      return { success: false, error };
+    } finally {
+      setProcessing(false);
+    }
+  }
+
+  // ===== DOWNLOAD & RESET =====
+  function downloadAudio(format = 'wav') {
+    const url = processedUrl || originalUrl;
+    if (!url) return;
+    const a = document.createElement('a');
+    a.href = url;
+    const filename = audioFile ? audioFile.name.replace(/\.[^.]+$/, '') : 'audio';
+    const ext = format === 'mp3' ? 'mp3' : 'wav';
+    a.download = `${filename}_${activeEffect || 'original'}.${ext}`;
+    a.click();
+  }
+
+  function reset() {
+    pause();
+    if (originalUrl) URL.revokeObjectURL(originalUrl);
+    if (processedUrl) URL.revokeObjectURL(processedUrl);
+
+    setAudioFile(null);
+    setAudioBuffer(null);
+    setOriginalUrl(null);
+    setProcessedUrl(null);
+    setCurrentTime(0);
+    setDuration(0);
+    setActiveEffect(null);
+    setIsPlaying(false);
+  }
+
+  function useProcessedAudio() {
+    if (processedUrl && audioRef.current) {
+      const wasPlaying = isPlaying;
+      const currentTimeStamp = currentTime;
+      pause();
+      audioRef.current.src = processedUrl;
+      audioRef.current.currentTime = currentTimeStamp;
+      if (wasPlaying) setTimeout(play, 100);
+    }
+  }
+
+  function useOriginalAudio() {
+    if (originalUrl && audioRef.current) {
+      const wasPlaying = isPlaying;
+      const currentTimeStamp = currentTime;
+      pause();
+      audioRef.current.src = originalUrl;
+      audioRef.current.currentTime = currentTimeStamp;
+      if (wasPlaying) setTimeout(play, 100);
+    }
+  }
+
+  // ===== TIME TRACKING =====
+  function startTimeTracking() {
+    if (intervalRef.current) return;
+    intervalRef.current = setInterval(() => {
+      if (audioRef.current) setCurrentTime(audioRef.current.currentTime);
+    }, 100);
+  }
+
+  function stopTimeTracking() {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  }
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handleLoadedMetadata = () => setDuration(audio.duration);
+    const handleEnded = () => {
+      setIsPlaying(false);
+      stopTimeTracking();
+    };
+
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+    audio.addEventListener('ended', handleEnded);
+
+    return () => {
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.removeEventListener('ended', handleEnded);
+    };
+  }, [originalUrl, processedUrl]);
+
+  // ===== MODERN EFFECT IMPLEMENTATIONS =====
+  async function effectBassBoosted(ctx, src) {
+    const subBass = ctx.createBiquadFilter();
+    subBass.type = "lowshelf"; subBass.frequency.value = 60; subBass.gain.value = 15;
+    const midBass = ctx.createBiquadFilter(); midBass.type="peaking"; midBass.frequency.value=120; midBass.Q.value=1.5; midBass.gain.value=12;
+    const upperBass = ctx.createBiquadFilter(); upperBass.type="peaking"; upperBass.frequency.value=250; upperBass.Q.value=1; upperBass.gain.value=8;
+    const trebleReduce = ctx.createBiquadFilter(); trebleReduce.type="highshelf"; trebleReduce.frequency.value=4000; trebleReduce.gain.value=-3;
+    const distortion = ctx.createWaveShaper(); const curve = new Float32Array(2048); for(let i=0;i<2048;i++){const x=(i/1024)-1; curve[i]=Math.tanh(x*2.5)*0.9;} distortion.curve=curve;
+
+    src.connect(subBass); subBass.connect(midBass); midBass.connect(upperBass); upperBass.connect(distortion); distortion.connect(trebleReduce); trebleReduce.connect(ctx.destination);
+  }
+
+  async function effectSynthwave(ctx, src) {
+    const warmth=ctx.createBiquadFilter(); warmth.type="lowshelf"; warmth.frequency.value=250; warmth.gain.value=6;
+    const synthPad=ctx.createBiquadFilter(); synthPad.type="peaking"; synthPad.frequency.value=1500; synthPad.Q.value=1; synthPad.gain.value=5;
+    const sparkle=ctx.createBiquadFilter(); sparkle.type="highshelf"; sparkle.frequency.value=6000; sparkle.gain.value=4;
+    const saturation=ctx.createWaveShaper(); const satCurve=new Float32Array(2048); for(let i=0;i<2048;i++){const x=(i/1024)-1;satCurve[i]=Math.tanh(x*1.5)*0.95;} saturation.curve=satCurve;
+    const reverb=ctx.createConvolver(); reverb.buffer=createIR(ctx,1.8,3);
+    const dry=ctx.createGain(); const wet=ctx.createGain(); dry.gain.value=0.65; wet.gain.value=0.35;
+
+    src.connect(saturation); saturation.connect(warmth); warmth.connect(synthPad); synthPad.connect(sparkle); sparkle.connect(dry); dry.connect(ctx.destination); sparkle.connect(reverb); reverb.connect(wet); wet.connect(ctx.destination);
+  }
+
+  async function effectNightcore(ctx, src) {
+    const treble=ctx.createBiquadFilter(); treble.type="highshelf"; treble.frequency.value=3000; treble.gain.value=4;
+    src.connect(treble); treble.connect(ctx.destination);
+  }
+
+  async function effectSlowedReverb(ctx, src) {
+    const con=ctx.createConvolver(); con.buffer=createIR(ctx,2.5,2);
+    const dry=ctx.createGain(); const wet=ctx.createGain(); dry.gain.value=0.6; wet.gain.value=0.4;
+    src.connect(dry); dry.connect(ctx.destination); src.connect(con); con.connect(wet); wet.connect(ctx.destination);
+  }
+
+  async function effectOrchestral(ctx, src) {
+    const bass=ctx.createBiquadFilter(); bass.type="lowshelf"; bass.frequency.value=150; bass.gain.value=8;
+    const strings1=ctx.createBiquadFilter(); strings1.type="peaking"; strings1.frequency.value=800; strings1.Q.value=1.5; strings1.gain.value=5;
+    const strings2=ctx.createBiquadFilter(); strings2.type="peaking"; strings2.frequency.value=2500; strings2.Q.value=1.3; strings2.gain.value=6;
+    const strings3=ctx.createBiquadFilter(); strings3.type="peaking"; strings3.frequency.value=5000; strings3.Q.value=1.5; strings3.gain.value=7;
+    const air=ctx.createBiquadFilter(); air.type="highshelf"; air.frequency.value=8000; air.gain.value=5;
+    const reverb=ctx.createConvolver(); reverb.buffer=createIR(ctx,3.5,2.2);
+    const dry=ctx.createGain(); const wet=ctx.createGain(); dry.gain.value=0.5; wet.gain.value=0.5;
+
+    src.connect(bass); bass.connect(strings1); strings1.connect(strings2); strings2.connect(strings3); strings3.connect(air); air.connect(dry); dry.connect(ctx.destination);
+    air.connect(reverb); reverb.connect(wet); wet.connect(ctx.destination);
+  }
+
+  function createIR(ctx, duration, decay) {
+    const rate = ctx.sampleRate;
+    const length = rate * duration;
+    const ir = ctx.createBuffer(2, length, rate);
+    for (let ch = 0; ch < 2; ch++) {
+      const data = ir.getChannelData(ch);
+      for (let i = 0; i < length; i++) {
+        data[i] = (Math.random()*2-1)*Math.pow(1-i/length,decay);
+      }
+    }
+    return ir;
+  }
+
+  function writeString(view, offset, string) {
+    for (let i=0;i<string.length;i++){view.setUint8(offset+i,string.charCodeAt(i));}
+  }
+
+  async function renderToWav(offlineCtx) {
+    const rendered = await offlineCtx.startRendering();
+    const numOfChan = rendered.numberOfChannels;
+    const length = rendered.length*numOfChan*2+44;
+    const buffer = new ArrayBuffer(length);
+    const view = new DataView(buffer);
+    writeString(view,0,"RIFF");
+    view.setUint32(4,36+rendered.length*numOfChan*2,true);
+    writeString(view,8,"WAVE");
+    writeString(view,12,"fmt ");
+    view.setUint32(16,16,true);
+    view.setUint16(20,1,true);
+    view.setUint16(22,numOfChan,true);
+    view.setUint32(24,rendered.sampleRate,true);
+    view.setUint32(28,rendered.sampleRate*numOfChan*2,true);
+    view.setUint16(32,numOfChan*2,true);
+    view.setUint16(34,16,true);
+    writeString(view,36,"data");
+    view.setUint32(40,rendered.length*numOfChan*2,true);
+
+    let offset=44;
+    const channels=[];
+    for(let i=0;i<numOfChan;i++) channels.push(rendered.getChannelData(i));
+    for(let i=0;i<rendered.length;i++){
+      for(let ch=0;ch<numOfChan;ch++){
+        let sample=Math.max(-1,Math.min(1,channels[ch][i]));
+        view.setInt16(offset,sample<0?sample*0x8000:sample*0x7fff,true);
+        offset+=2;
+      }
+    }
+    return new Blob([view],{type:"audio/wav"});
+  }
+
+  return (
+    <audio ref={audioRef} src={originalUrl}></audio>
+  );
+}

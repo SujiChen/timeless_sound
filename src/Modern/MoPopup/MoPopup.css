@@ -1,0 +1,157 @@
+.mopop {
+/* Full-screen overlay with slight blur */
+    .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    }
+
+    /* Card container */
+    .popup-content {
+    background: #1a1a1a;
+    color: #fff;
+    /* width: 550px; */
+    max-width: 80%;
+    height: 80%;
+    border-radius: 15px;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: 'Arial', sans-serif;
+    }
+
+    /* Close button */
+    .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    color: #fff;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    }
+
+    .close-btn:hover {
+    color: #ff5555;
+    }
+
+    /* Headline */
+    .popup-content h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    }
+
+    /* File upload */
+    .popup-content input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background: #222;
+    color: #fff;
+    cursor: pointer;
+    }
+
+    /* Controls layout */
+    .controls {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+     margin: 10px 0;
+    }
+
+    .controls button {
+    flex: 1 1 48%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    background: #333;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    }
+
+    .controls button:hover {
+    background: #555;
+    transform: translateY(-2px);
+    }
+
+    /* Volume slider */
+    .volume {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    }
+
+    .volume input[type="range"] {
+    flex: 1;
+    cursor: pointer;
+    }
+
+    /* Effects buttons */
+    .effects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    }
+
+    .effects button {
+    flex: 1 1 48%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #222;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+    }
+
+    .effects button:hover {
+    background: #444;
+    transform: translateY(-1px);
+    }
+
+    /* Download button */
+    .download-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #ff0080;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    }
+
+    .download-btn:hover {
+    background: #ff33a1;
+    transform: translateY(-2px);
+    }
+
+    /* Audio element styling */
+    audio {
+    width: 100%;
+    margin-bottom: 10px;
+    outline: none;
+    }
+
+
+}
+
