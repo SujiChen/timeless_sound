@@ -10,23 +10,41 @@ export default function Modern() {
   return (
     <div className="modern-page">
       <Header />
-      <h1 className="modern-title">MODERN SOUND</h1>
 
+      <h1 className="modern-title4">MODERN SOUND</h1>
+      
       <div className="modern-layout">
         {/* Left Speaker */}
         <div className="modern-speaker">
-          <div className="speaker-circle tweeter"></div>
-          <div className="speaker-circle mid"></div>
-          <div className="speaker-circle bass"></div>
-        </div>
+           <div className="speaker-circle tweeter">
+            <div className="speaker-inner tweeter-inner"></div>
+          </div>
+          <div className="speaker-circle mid">
+            <div className="speaker-inner mid-inner"></div>
+          </div>
+          <div className="speaker-circle bass">
+            <div className="speaker-inner bass-inner"></div>
+          </div>
+         </div>
 
         {/* Monitor */}
         <div className="modern-monitor">
-          <div className="screen" onClick={() => setShowTapePopup(true)}>
-            <div className="monitor-buttons">
-              <button className="monitor-btn">⏮</button>
-              <button className="monitor-btn">⏯</button>
-              <button className="monitor-btn">⏭</button>
+
+        <div className="screen">
+            <div className="desktop-apps" onClick={() => setShowTapePopup(true)}>
+              <div className="app-icon music">
+                <span className="app-emoji">♫</span>
+                {/* ♪ */}
+                <span className="app-label"></span>
+              </div>
+              {/* <div className="app-icon video">
+                <span className="app-emoji">🎬</span>
+                <span className="app-label"></span>
+              </div>
+              <div className="app-icon settings">
+                <span className="app-emoji">⚙️</span>
+                <span className="app-label"></span>
+              </div> */}
             </div>
           </div>
           <div className="monitor-stand"></div>
@@ -34,9 +52,15 @@ export default function Modern() {
 
         {/* Right Speaker */}
         <div className="modern-speaker">
-          <div className="speaker-circle tweeter"></div>
-          <div className="speaker-circle mid"></div>
-          <div className="speaker-circle bass"></div>
+           <div className="speaker-circle tweeter">
+            <div className="speaker-inner tweeter-inner"></div>
+          </div>
+          <div className="speaker-circle mid">
+            <div className="speaker-inner mid-inner"></div>
+          </div>
+          <div className="speaker-circle bass">
+            <div className="speaker-inner bass-inner"></div>
+          </div>
         </div>
       </div>
 {/* POPUP COMPONENT */}

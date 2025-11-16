@@ -10,7 +10,7 @@ export default function Retro() {
   return (
     <div className="retro-page">
       <Header />
-      <h1 className="retro-title">RETRO VIBES</h1>
+      <h1 className="retro-title1">RETRO VIBES</h1>
 
       <div className="boombox">
         {/* Handle */}
