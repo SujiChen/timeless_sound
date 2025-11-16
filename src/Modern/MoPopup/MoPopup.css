@@ -1,157 +1,478 @@
 .mopop {
-/* Full-screen overlay with slight blur */
-    .popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    }
-
-    /* Card container */
-    .popup-content {
-    background: #1a1a1a;
-    color: #fff;
-    /* width: 550px; */
-    max-width: 80%;
-    height: 80%;
-    border-radius: 15px;
-    padding: 30px;
-    position: relative;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    font-family: 'Lato', sans-serif;
-    }
-
-    /* Close button */
-    .close-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: transparent;
-    color: #fff;
-    border: none;
-    font-size: 1.3rem;
-    cursor: pointer;
-    transition: color 0.2s;
-    }
-
-    .close-btn:hover {
-    color: #ff5555;
-    }
-
-    /* Headline */
-    .popup-content h2 {
-    text-align: center;
-    margin-bottom: 10px;
-    font-size: 1.8rem;
-    }
-
-    /* File upload */
-    .popup-content input[type="file"] {
-    width: 100%;
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #444;
-    background: #222;
-    color: #fff;
-    cursor: pointer;
-    }
-
-    /* Controls layout */
-    .controls {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-     margin: 10px 0;
-    }
-
-    .controls button {
-    flex: 1 1 48%;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
-    background: #333;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s;
-    }
-
-    .controls button:hover {
-    background: #555;
-    transform: translateY(-2px);
-    }
-
-    /* Volume slider */
-    .volume {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    }
-
-    .volume input[type="range"] {
-    flex: 1;
-    cursor: pointer;
-    }
-
-    /* Effects buttons */
-    .effects {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    }
-
-    .effects button {
-    flex: 1 1 48%;
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    background: #222;
-    color: #fff;
-    cursor: pointer;
-    transition: all 0.2s;
-    }
-
-    .effects button:hover {
-    background: #444;
-    transform: translateY(-1px);
-    }
-
-    /* Download button */
-    .download-btn {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: none;
-    background: #ff0080;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s;
-    }
-
-    .download-btn:hover {
-    background: #ff33a1;
-    transform: translateY(-2px);
-    }
-
-    /* Audio element styling */
-    audio {
-    width: 100%;
-    margin-bottom: 10px;
-    outline: none;
-    }
-
-
+  font-family: 'Lato', sans-serif;
+  box-sizing: border-box;
 }
 
+.mopop * {
+  box-sizing: border-box;
+}
+
+/* Full-screen overlay with slight blur */
+.mopop .popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Card container */
+.mopop .popup-content {
+  background: #1a1a1a;
+  color: #fff;
+  width: 700px;
+  max-width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 15px;
+  padding: 25px;
+  position: relative;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: 'Lato', sans-serif;
+}
+
+/* Close button */
+.mopop .close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  color: #fff;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.mopop .close-btn:hover {
+  color: #ff5555;
+}
+
+/* Headline */
+.mopop .title {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.mopop .title h2 {
+  background: linear-gradient(to top, rgb(255, 1, 200), rgb(247, 155, 214) ,white);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  font-size: 2.5rem;
+  font-family: 'Playfair Display', sans-serif;
+  font-weight: normal;
+}
+
+/* Audio element - hidden, we use custom controls */
+.mopop audio {
+  display: none;
+}
+
+/* File upload wrapper */
+.mopop .file-upload-wrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: #222;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #444;
+}
+
+.mopop .file-upload-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #ff0080;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  font-size: 0.85rem;
+}
+
+.mopop .file-upload-button:hover {
+  background: #ff33a1;
+  transform: translateY(-2px);
+}
+
+.mopop .file-name {
+  color: #aaa;
+  font-size: 0.9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+/* Audio info and waveform */
+.mopop .audio-info {
+  background: #222;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #444;
+}
+
+.mopop .waveform-display {
+  background: transparent;
+}
+
+.mopop .waveform-bars {
+  display: flex;
+  gap: 3px;
+  height: 40px;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.mopop .bar {
+  width: 4px;
+  background: linear-gradient(to top, #ff0080, #ff66b2);
+  border-radius: 2px;
+  transition: height 0.3s ease;
+}
+
+/* Controls layout */
+.mopop .controls {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 5px 0;
+}
+
+.mopop .controls button,
+.mopop .control-btn {
+  flex: 1 1 48%;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #333;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+}
+
+.mopop .controls button:hover:not(:disabled),
+.mopop .control-btn:hover:not(:disabled) {
+  background: #555;
+  transform: translateY(-2px);
+}
+
+.mopop .controls button:disabled,
+.mopop .control-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mopop .play-btn {
+  background: #ff0080;
+}
+
+.mopop .play-btn:hover:not(:disabled) {
+  background: #ff33a1;
+}
+
+.mopop .reset-btn {
+  background: #ff6600;
+}
+
+.mopop .reset-btn:hover:not(:disabled) {
+  background: #ff8833;
+}
+
+/* Volume control */
+.mopop .volume-control {
+  background: #222;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #444;
+}
+
+.mopop .volume-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+.mopop .volume-value {
+  color: #ff0080;
+  font-weight: bold;
+}
+
+.mopop .volume-slider {
+  width: 100%;
+  cursor: pointer;
+  height: 6px;
+  border-radius: 3px;
+  background: #444;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.mopop .volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ff0080;
+  cursor: pointer;
+}
+
+.mopop .volume-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ff0080;
+  cursor: pointer;
+  border: none;
+}
+
+/* Effects section */
+.mopop .effects-section {
+  background: #222;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #444;
+}
+
+.mopop .effects-title {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.mopop .effects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.mopop .effect-card {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background: #2a2a2a;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  border: 2px solid transparent;
+}
+
+.mopop .effect-card:hover:not(:disabled) {
+  background: #333;
+  transform: translateY(-2px);
+  border-color: #ff0080;
+}
+
+.mopop .effect-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mopop .effect-card.active {
+  background: #ff0080;
+  border-color: #fff;
+  box-shadow: 0 0 15px rgba(255, 0, 128, 0.5);
+}
+
+.mopop .effect-icon {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.mopop .effect-desc {
+  font-size: 0.7rem;
+  color: #aaa;
+  font-weight: normal;
+}
+
+.mopop .effect-card.active .effect-desc {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Processing indicator */
+.mopop .processing-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: #222;
+  padding: 10px;
+  border-radius: 8px;
+  color: #ff0080;
+  font-weight: bold;
+  border: 1px solid #444;
+  font-size: 0.85rem;
+}
+
+.mopop .spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #444;
+  border-top-color: #ff0080;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Active effect banner */
+.mopop .active-effect-banner {
+  background: #2a2a2a;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid #ff0080;
+  box-shadow: 0 0 15px rgba(255, 0, 128, 0.3);
+}
+
+.mopop .effect-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.mopop .status-icon {
+  font-size: 1rem;
+}
+
+.mopop .remove-effect-btn {
+  padding: 6px 12px;
+  background: transparent;
+  border: 2px solid #ff0080;
+  border-radius: 5px;
+  color: #ff0080;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.75rem;
+  transition: all 0.2s;
+}
+
+.mopop .remove-effect-btn:hover {
+  background: #ff0080;
+  color: #fff;
+}
+
+/* Audio preview */
+.mopop .audio-preview {
+  background: #222;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #444;
+}
+
+.mopop .preview-label {
+  color: #aaa;
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 0.8rem;
+}
+
+.mopop .preview-player {
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* Download section */
+.mopop .download-section {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.mopop .format-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #aaa;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.mopop .format-select {
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: 1px solid #444;
+  background: #222;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.mopop .download-btn {
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: none;
+  background: #ff0080;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.mopop .download-btn:hover:not(:disabled) {
+  background: #ff33a1;
+  transform: translateY(-2px);
+}
+
+.mopop .download-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Info footer */
+.mopop .info-footer {
+  text-align: center;
+  color: #666;
+  font-size: 0.8rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .mopop .popup-content {
+    max-width: 95%;
+    padding: 20px;
+  }
+
+  .mopop .controls button,
+  .mopop .control-btn {
+    flex: 1 1 100%;
+  }
+
+  .mopop .effects-grid {
+    grid-template-columns: 1fr;
+  }
+}

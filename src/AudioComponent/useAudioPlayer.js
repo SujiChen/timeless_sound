@@ -15,21 +15,17 @@ export default function useAudioPlayer() {
   // File upload handler
   async function handleFileUpload(file) {
     try {
-      // Store original file
       originalFileRef.current = file;
       
-      // Create URL for original audio
       const url = URL.createObjectURL(file);
       if (originalUrl) URL.revokeObjectURL(originalUrl);
       setOriginalUrl(url);
       
-      // Decode audio for processing
       const arrayBuffer = await file.arrayBuffer();
       const ac = new (window.AudioContext || window.webkitAudioContext)();
       const audioBuffer = await ac.decodeAudioData(arrayBuffer);
       audioBufferRef.current = audioBuffer;
       
-      // Reset processed audio
       if (processedUrl) URL.revokeObjectURL(processedUrl);
       setProcessedUrl(null);
       setActiveEffect(null);
@@ -116,7 +112,7 @@ export default function useAudioPlayer() {
     setActiveEffect(null);
   }
 
-  // Helper functions for audio processing
+  // Helper functions
   function writeString(view, offset, string) {
     for (let i = 0; i < string.length; i++) {
       view.setUint8(offset + i, string.charCodeAt(i));
@@ -173,7 +169,7 @@ export default function useAudioPlayer() {
     return ir;
   }
 
-  // Effect functions
+  // ====== RETRO EFFECTS ======
   async function effectPCSpeaker(ctx, src) {
     const beeper = ctx.createWaveShaper();
     const curve = new Float32Array(2048);
@@ -401,8 +397,205 @@ export default function useAudioPlayer() {
     wet.connect(ctx.destination);
   }
 
-  // Main effect application function
-  async function applyRetroEffect(effectName, playbackRate = 1) {
+  // ====== MODERN EFFECTS ======
+  async function effectBassBoosted(ctx, src) {
+    const subBass = ctx.createBiquadFilter();
+    subBass.type = "lowshelf";
+    subBass.frequency.value = 60;
+    subBass.gain.value = 15;
+
+    const midBass = ctx.createBiquadFilter();
+    midBass.type = "peaking";
+    midBass.frequency.value = 120;
+    midBass.Q.value = 1.5;
+    midBass.gain.value = 12;
+
+    const upperBass = ctx.createBiquadFilter();
+    upperBass.type = "peaking";
+    upperBass.frequency.value = 250;
+    upperBass.Q.value = 1;
+    upperBass.gain.value = 8;
+
+    const trebleReduce = ctx.createBiquadFilter();
+    trebleReduce.type = "highshelf";
+    trebleReduce.frequency.value = 4000;
+    trebleReduce.gain.value = -3;
+
+    const distortion = ctx.createWaveShaper();
+    const curve = new Float32Array(2048);
+    for (let i = 0; i < 2048; i++) {
+      const x = (i / 1024) - 1;
+      curve[i] = Math.tanh(x * 2.5) * 0.9;
+    }
+    distortion.curve = curve;
+
+    src.connect(subBass);
+    subBass.connect(midBass);
+    midBass.connect(upperBass);
+    upperBass.connect(distortion);
+    distortion.connect(trebleReduce);
+    trebleReduce.connect(ctx.destination);
+  }
+
+  async function effectSynthwave(ctx, src) {
+    const warmth = ctx.createBiquadFilter();
+    warmth.type = "lowshelf";
+    warmth.frequency.value = 250;
+    warmth.gain.value = 6;
+
+    const synthPad = ctx.createBiquadFilter();
+    synthPad.type = "peaking";
+    synthPad.frequency.value = 1500;
+    synthPad.Q.value = 1;
+    synthPad.gain.value = 5;
+
+    const sparkle = ctx.createBiquadFilter();
+    sparkle.type = "highshelf";
+    sparkle.frequency.value = 6000;
+    sparkle.gain.value = 4;
+
+    const saturation = ctx.createWaveShaper();
+    const satCurve = new Float32Array(2048);
+    for (let i = 0; i < 2048; i++) {
+      const x = (i / 1024) - 1;
+      satCurve[i] = Math.tanh(x * 1.5) * 0.95;
+    }
+    saturation.curve = satCurve;
+
+    const reverb = ctx.createConvolver();
+    reverb.buffer = createIR(ctx, 1.8, 3);
+
+    const dry = ctx.createGain();
+    const wet = ctx.createGain();
+    dry.gain.value = 0.65;
+    wet.gain.value = 0.35;
+
+    src.connect(saturation);
+    saturation.connect(warmth);
+    warmth.connect(synthPad);
+    synthPad.connect(sparkle);
+    sparkle.connect(dry);
+    dry.connect(ctx.destination);
+
+    sparkle.connect(reverb);
+    reverb.connect(wet);
+    wet.connect(ctx.destination);
+  }
+
+  async function effectNightcore(ctx, src) {
+    const treble = ctx.createBiquadFilter();
+    treble.type = "highshelf";
+    treble.frequency.value = 3000;
+    treble.gain.value = 4;
+
+    src.connect(treble);
+    treble.connect(ctx.destination);
+  }
+
+  async function effectSlowedReverb(ctx, src) {
+    const con = ctx.createConvolver();
+    con.buffer = createIR(ctx, 2.5, 2);
+    const dry = ctx.createGain();
+    const wet = ctx.createGain();
+    dry.gain.value = 0.6;
+    wet.gain.value = 0.4;
+
+    src.connect(dry);
+    dry.connect(ctx.destination);
+    src.connect(con);
+    con.connect(wet);
+    wet.connect(ctx.destination);
+  }
+
+  async function effectOrchestral(ctx, src) {
+    const vocalNotch1 = ctx.createBiquadFilter();
+    vocalNotch1.type = "notch";
+    vocalNotch1.frequency.value = 350;
+    vocalNotch1.Q.value = 2;
+
+    const vocalNotch2 = ctx.createBiquadFilter();
+    vocalNotch2.type = "notch";
+    vocalNotch2.frequency.value = 900;
+    vocalNotch2.Q.value = 2;
+
+    const vocalNotch3 = ctx.createBiquadFilter();
+    vocalNotch3.type = "notch";
+    vocalNotch3.frequency.value = 1500;
+    vocalNotch3.Q.value = 2.5;
+
+    const vocalNotch4 = ctx.createBiquadFilter();
+    vocalNotch4.type = "notch";
+    vocalNotch4.frequency.value = 2500;
+    vocalNotch4.Q.value = 2;
+
+    const vocalNotch5 = ctx.createBiquadFilter();
+    vocalNotch5.type = "notch";
+    vocalNotch5.frequency.value = 3500;
+    vocalNotch5.Q.value = 1.5;
+
+    const bass = ctx.createBiquadFilter();
+    bass.type = "lowshelf";
+    bass.frequency.value = 150;
+    bass.gain.value = 8;
+
+    const lowMid = ctx.createBiquadFilter();
+    lowMid.type = "peaking";
+    lowMid.frequency.value = 250;
+    lowMid.Q.value = 1.2;
+    lowMid.gain.value = 6;
+
+    const strings1 = ctx.createBiquadFilter();
+    strings1.type = "peaking";
+    strings1.frequency.value = 800;
+    strings1.Q.value = 1.5;
+    strings1.gain.value = 5;
+
+    const strings2 = ctx.createBiquadFilter();
+    strings2.type = "peaking";
+    strings2.frequency.value = 2500;
+    strings2.Q.value = 1.3;
+    strings2.gain.value = 6;
+
+    const strings3 = ctx.createBiquadFilter();
+    strings3.type = "peaking";
+    strings3.frequency.value = 5000;
+    strings3.Q.value = 1.5;
+    strings3.gain.value = 7;
+
+    const air = ctx.createBiquadFilter();
+    air.type = "highshelf";
+    air.frequency.value = 8000;
+    air.gain.value = 5;
+
+    const reverb = ctx.createConvolver();
+    reverb.buffer = createIR(ctx, 3.5, 2.2);
+
+    const dry = ctx.createGain();
+    const wet = ctx.createGain();
+    dry.gain.value = 0.5;
+    wet.gain.value = 0.5;
+
+    src.connect(vocalNotch1);
+    vocalNotch1.connect(vocalNotch2);
+    vocalNotch2.connect(vocalNotch3);
+    vocalNotch3.connect(vocalNotch4);
+    vocalNotch4.connect(vocalNotch5);
+    vocalNotch5.connect(bass);
+    bass.connect(lowMid);
+    lowMid.connect(strings1);
+    strings1.connect(strings2);
+    strings2.connect(strings3);
+    strings3.connect(air);
+    air.connect(dry);
+    dry.connect(ctx.destination);
+
+    air.connect(reverb);
+    reverb.connect(wet);
+    wet.connect(ctx.destination);
+  }
+
+  // Main effect application function (handles both retro and modern)
+  async function applyEffect(effectName, playbackRate = 1) {
     if (!audioBufferRef.current) {
       return { success: false, error: 'No audio loaded' };
     }
@@ -425,15 +618,22 @@ export default function useAudioPlayer() {
       src.buffer = orig;
       src.playbackRate.value = playbackRate;
 
-      // Apply the appropriate effect
+      // All effects in one map
       const effectMap = {
+        // Retro effects
         'pcspeaker': effectPCSpeaker,
         '8bit': effect8Bit,
         'arcade': effectArcade,
         '16bit': effect16Bit,
         'fmsynth': effectFMSynth,
         'lofi': effectLofi,
-        'bardcore': effectBardcore
+        'bardcore': effectBardcore,
+        // Modern effects
+        'bassboosted': effectBassBoosted,
+        'synthwave': effectSynthwave,
+        'nightcore': effectNightcore,
+        'slowedreverb': effectSlowedReverb,
+        'orchestral': effectOrchestral
       };
 
       const effectFn = effectMap[effectName];
@@ -459,6 +659,10 @@ export default function useAudioPlayer() {
       return { success: false, error };
     }
   }
+
+  // Aliases for backwards compatibility
+  const applyRetroEffect = applyEffect;
+  const applyModernEffect = applyEffect;
 
   // Download function
   function downloadAudio(format = 'wav') {
@@ -495,7 +699,9 @@ export default function useAudioPlayer() {
     useOriginalAudio,
     useProcessedAudio,
     reset,
-    applyRetroEffect,
+    applyEffect,
+    applyRetroEffect,  // Alias
+    applyModernEffect, // Alias
     downloadAudio
   };
 }
