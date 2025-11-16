@@ -19,6 +19,7 @@
   /* margin-top: 45px; */
 }
 
+
 /* Monitor */
 .modern-monitor {
   width: 650px;
@@ -209,7 +210,7 @@
     );
   border-radius: 14px;
   pointer-events: none;
-  z-index: 1;
+  z-index: 10;
 }
 
 /* Outer speaker circles with pulsing animation */
@@ -223,7 +224,7 @@
   justify-content: center;
   position: relative;
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
-  z-index: 2;
+  z-index: 20;
 }
 
 /* Add mesh/grille texture to speaker surrounds */
@@ -339,7 +340,7 @@
   margin-top: 70px;
   margin-bottom: 20px;
   font-size: 3rem;
-  color: #ddd;
+  color: #000000;
   font-family: 'Playfair Display', sans-serif;
 }
 
@@ -347,3 +348,52 @@
   font-family: 'Lato', sans-serif;
 }
 
+.modern-page {
+  height: 100vh;
+  width: 100%;
+  background: radial-gradient(circle at 50% 20%, #ffffff, #bfbfbf 40%, #8d8d8d 80%);
+}
+
+.modern-monitor .screen {
+  position: relative;
+  box-shadow:
+    0 0 25px rgba(0, 180, 255, 0.4),
+    0 0 50px rgba(0, 180, 255, 0.3),
+    0 0 80px rgba(0, 180, 255, 0.2);
+}
+
+/* LED Strip Border */
+.modern-monitor .screen::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 16px;
+  border: 3px solid rgba(0, 180, 255, 0.7);
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.modern-speaker {
+  position: relative;
+  box-shadow:
+    0 0 25px rgba(255, 0, 200, 0.4),
+    0 0 50px rgba(255, 0, 200, 0.3),
+    0 0 80px rgba(255, 0, 200, 0.2);
+}
+
+.modern-speaker::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 18px;
+  border: 3px solid rgba(255, 0, 200, 0.7);
+  filter: blur(5px);
+  pointer-events: none;
+  z-index: 0;
+}
