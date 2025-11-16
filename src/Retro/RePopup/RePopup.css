@@ -1,0 +1,78 @@
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6); /* semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* on top of everything */
+}
+
+.popup-content {
+  background: linear-gradient(to bottom, #ff66cc, #ffcc66);
+  border: 5px solid #ff00cc;
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+.popup-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  cursor: pointer;
+  color: #222;
+}
+
+
+.boombox-container {
+  background: #222;
+  border: 8px solid #ff00cc;
+  border-radius: 25px;
+  width: 700px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.effects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #ff00cc;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ff66cc;
+}
+
+input[type="range"] {
+  width: 60%;
+  margin: 10px 0;
+}
