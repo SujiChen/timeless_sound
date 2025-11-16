@@ -63,7 +63,8 @@ export default function Modern() {
           </div>
         </div>
       </div>
-{/* POPUP COMPONENT */}
+      
+      {/* POPUP COMPONENT */}
       {showTapePopup && <MoPopup closePopup={() => setShowTapePopup(false)} />}
     
     </div>

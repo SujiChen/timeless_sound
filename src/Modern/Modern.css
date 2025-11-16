@@ -1,7 +1,7 @@
 /* Modern page fills full viewport */
 .modern-page {
   height: 100vh; /* full viewport height */
-  width: 100%;
+  width: 100vw;
   background: #a6a3a3;
   display: flex;
   flex-direction: column;

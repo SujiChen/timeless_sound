@@ -1,11 +1,13 @@
 import React, { useRef, useState } from "react";
 import AudioPlayerCore from "../ModernAudioCore"; // Core player
 import "./MoPopup.css";
+import { getNextZIndex } from "../../HomePage/PopupStack";
 
 export default function MoPopup({ closePopup }) {
   const audioRef = useRef(null);
   const [fileLoaded, setFileLoaded] = useState(false);
   const audioCore = AudioPlayerCore();
+   const [zIndex] = useState(getNextZIndex()); // assign a z-index when mounted
 
   async function handleUpload(e) {
     const file = e.target.files[0];
@@ -29,13 +31,13 @@ export default function MoPopup({ closePopup }) {
   return (
     <div className="mopop">
 
-    <div className="popup-overlay">
+    <div className="popup-overlay" style={{ zIndex }}>
       <div className="popup-content">
         <button className="close-btn" onClick={closePopup}>
           ✖
         </button>
 
-        <h2>Modern Audio Player</h2>
+        <h2>♫ Modern Audio Player</h2>
         <audio ref={audioRef} />
 
         <input type="file" onChange={handleUpload} />

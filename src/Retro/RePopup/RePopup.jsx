@@ -1,11 +1,12 @@
 import React, { useState, useRef } from "react";
 import AudioPlayerCore from "../RetroAudioCore";
 import "./RePopup.css";
+import { getNextZIndex } from "../../HomePage/PopupStack";
 
 export default function RePopup({ closePopup }) {
   const audioRef = useRef(null);
   const [fileLoaded, setFileLoaded] = useState(false);
-
+ const [zIndex] = useState(getNextZIndex()); // assign a z-index when mounted
   const audioCore = AudioPlayerCore();
 
   async function handleUpload(e) {
@@ -28,7 +29,7 @@ export default function RePopup({ closePopup }) {
   return (
     <div className="repop">
 
-      <div className="popup-overlay">
+      <div className="popup-overlay" style={{ zIndex }}>
         <div className="popup-content">
           <button className="popup-close" onClick={closePopup}>
             ✖
