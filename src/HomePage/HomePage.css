@@ -1,7 +1,7 @@
 .overlay-container {
   position: relative;
   width: 100%;
-  height: 100vh; /* full viewport height */
+  height: 100vh;
   overflow: hidden;
 }
 
@@ -11,7 +11,7 @@
   left: 0;
   height: 100%;
   overflow: hidden;
-  transition: width 0.3s ease; /* smooth resizing */
+  transition: width 0.3s ease;
 }
 
 .retro {
@@ -23,11 +23,53 @@
   width: 100%;
 }
 
-.slider {
+/* Timeline slider styling */
+.timeline-container {
   position: absolute;
-  bottom: 20px;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  width: 50%;
+  display: flex;
+  align-items: center;
+  width: 60%;
+  gap: 10px;
   z-index: 3;
+}
+
+.timeline-label {
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 1px 1px 3px #000;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(to right, #ff00cc 0%, #ffffff 100%);
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }

@@ -1,20 +1,17 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import './HomePage.css';
-import Header from '../Header/Header';
-import RetroPage from "../Retro/RetroPage";
-import ModernPage from "../Modern/ModernPage";
+import RetroPage from '../Retro/RetroPage';
+import ModernPage from '../Modern/ModernPage';
 
 export default function HomePage() {
-    const [ratio, setRatio] = useState(50); // 50% by default
+  const [ratio, setRatio] = useState(50);
 
   return (
     <div className="overlay-container">
-      {/* Modern Page at the back */}
       <div className="page modern">
         <ModernPage />
       </div>
 
-      {/* Retro Page on top, width controlled by slider */}
       <div
         className="page retro"
         style={{ width: `${ratio}%` }}
@@ -22,15 +19,18 @@ export default function HomePage() {
         <RetroPage />
       </div>
 
-      {/* Slider */}
-      <input
-        type="range"
-        min="0"
-        max="100"
-        value={ratio}
-        className="slider"
-        onChange={(e) => setRatio(e.target.value)}
-      />
+      <div className="timeline-container">
+        <span className="timeline-label">Retro</span>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={ratio}
+          className="slider"
+          onChange={(e) => setRatio(e.target.value)}
+        />
+        <span className="timeline-label">Modern</span>
+      </div>
     </div>
-    )
+  );
 }

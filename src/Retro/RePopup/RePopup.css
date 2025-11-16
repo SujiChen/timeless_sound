@@ -2,70 +2,88 @@
   font-family: 'IBM Plex Mono', sans-serif;
 }
 
+/* Full-screen overlay */
 .repop .popup-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.6); /* semi-transparent background */
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999; /* on top of everything */
-  font-family: 'IBM Plex Mono', sans-serif;
+  z-index: 9999;
+  padding: 20px; /* ensure spacing on smaller screens */
+  box-sizing: border-box;
+  overflow-y: auto; /* allow scrolling if viewport is small */
 }
 
+/* Popup box */
 .repop .popup-content {
   background: linear-gradient(to bottom, #ff66cc, #ffcc66);
   border: 5px solid #ff00cc;
   border-radius: 20px;
-  padding: 30px;
-  max-width: 90%;
-  max-height: 90%;
+  padding: 25px 40px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   position: relative;
-  font-family: 'IBM Plex Mono', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
 }
 
+/* Close button */
 .repop .popup-close {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 15px;
   border: none;
   background: transparent;
-  font-size: 24px;
+  font-size: 28px;
   cursor: pointer;
   color: #222;
+  transition: color 0.2s;
 }
 
+.repop .popup-close:hover {
+  color: #ff00cc;
+}
+
+/* Boombox container */
 .repop .boombox-container {
   background: #222;
   border: 8px solid #ff00cc;
   border-radius: 25px;
-  width: 700px;
+  width: 100%;
+  max-width: 700px;
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: 'IBM Plex Mono', sans-serif;
+  box-sizing: border-box;
 }
 
+/* Control buttons */
 .repop .controls {
   display: flex;
   gap: 10px;
-  margin: 10px 0;
-  font-family: 'IBM Plex Mono', sans-serif;
+  margin: 15px 0;
 }
 
+/* Effects buttons */
 .repop .effects {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin: 10px 0;
+  gap: 10px;
+  margin: 15px 0;
 }
 
+/* Generic button styling */
 .repop button {
   padding: 8px 12px;
   border: none;
@@ -73,17 +91,74 @@
   background-color: #ff00cc;
   color: white;
   cursor: pointer;
-  font-family: 'IBM Plex Mono', sans-serif;
+  transition: background 0.2s;
 }
 
 .repop button:hover {
   background-color: #ff66cc;
 }
 
+/* Range input */
 .repop input[type="range"] {
   width: 100%;
-  margin: 10px 0;
+  /* margin: 10px 0; */
 }
-.title{
+
+/* Title styling */
+.title {
   font-family: 'Press Start 2P', sans-serif;
+  text-align: center;
+  margin-bottom: 15px;
+  color: #fff;
+  text-shadow: 1px 1px 3px #000;
 }
+
+/* Effects container */
+.repop .effects {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 15px 0;
+  width: 100%;
+}
+
+/* Effects heading */
+.repop .effects h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #fff;
+  text-shadow: 1px 1px 2px #000;
+}
+
+/* Effects grid */
+.repop .effects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
+  width: 100%;
+}
+
+/* Individual effect button */
+.repop .effects-grid button {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: #ff00cc;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  font-size: 14px;
+}
+
+.repop .effects-grid button:hover {
+  background-color: #ff66cc;
+  transform: translateY(-2px);
+}
+
+/* Active effect button */
+.repop .effects-grid button.active {
+  background-color: #ff9900;
+  color: #fff;
+  font-weight: bold;
+}
+

@@ -63,7 +63,7 @@ export default function RePopup({ closePopup }) {
           <button className="popup-close" onClick={closePopup}>
             ✖
           </button>
-          <h1 className="title">🎵 Retro Cassette Tape</h1>
+          <h1 className="title">🎵 Retro Audio Player</h1>
           <div className="boombox-container">
             <audio 
               ref={audioPlayer.audioRef} 
