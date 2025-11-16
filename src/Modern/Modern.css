@@ -54,6 +54,45 @@
   left: 5%;
 }
 
+.desktop-apps {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-icon:hover {
+  transform: translateY(-5px);
+}
+.app-emoji {
+  font-size: 48px;
+  background: rgba(34, 34, 34, 0.8);
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid #888;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+}
+.music .app-emoji {
+  color: #ff3333;
+  
+}
+
+.app-icon:hover .app-emoji {
+  background: rgba(85, 85, 85, 0.9);
+  border-color: #aaa;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.app-label {
+  color: #ddd;
+  font-size: 12px;
+  font-weight: 500;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
 /* Monitor buttons stay inside inner panel */
 .monitor-buttons {
   position: relative;
@@ -120,38 +159,159 @@
   align-items: center;
   justify-content: space-around;
   padding: 20px 0;
+  position: relative;
 }
 
-/* Speaker circles */
+/* Add fabric texture overlay to speaker box */
+.modern-speaker::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.03) 0px,
+      transparent 1px,
+      transparent 2px,
+      rgba(255, 255, 255, 0.03) 3px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.03) 0px,
+      transparent 1px,
+      transparent 2px,
+      rgba(255, 255, 255, 0.03) 3px
+    );
+  border-radius: 14px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Outer speaker circles with pulsing animation */
 .speaker-circle {
   border-radius: 50%;
-  border: 3px solid #555;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  margin: 15px 0;
+  animation: pulse 2s ease-in-out infinite;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+  z-index: 2;
 }
 
-/* Tweeter */
-.speaker-circle.tweeter {
+/* Add mesh/grille texture to speaker surrounds */
+.speaker-circle::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-image: 
+    repeating-radial-gradient(
+      circle at center,
+      transparent 0px,
+      rgba(0, 0, 0, 0.1) 1px,
+      transparent 2px,
+      transparent 4px
+    );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tweeter {
   width: 60px;
   height: 60px;
-  background: radial-gradient(circle at 30% 30%, #aaa, #333);
+  background: radial-gradient(circle at 35% 35%, #555, #2a2a2a);
+  animation-delay: 0s;
 }
 
-/* Mid */
-.speaker-circle.mid {
+.mid {
   width: 100px;
   height: 100px;
-  background: radial-gradient(circle at 30% 30%, #666, #222);
+  background: radial-gradient(circle at 35% 35%, #4a4a4a, #252525);
+  animation-delay: 0.3s;
 }
 
-/* Bass */
-.speaker-circle.bass {
-  width: 120px;
-  height: 120px;
-  background: radial-gradient(circle at 30% 30%, #333, #111);
+.bass {
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle at 35% 35%, #3f3f3f, #1a1a1a);
+  animation-delay: 0.6s;
 }
 
+/* Inner speaker cones (the actual driver) */
+.speaker-inner {
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #2a2a2a, #0a0a0a);
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  box-shadow: 
+    inset 0 -2px 5px rgba(255, 255, 255, 0.1),
+    inset 0 2px 5px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 3;
+}
+
+/* Dust cap (center dome of speaker) */
+.speaker-inner::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #1a1a1a, #000);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Tweeter sizes */
+.tweeter-inner {
+  width: 35px;
+  height: 35px;
+}
+
+.tweeter-inner::after {
+  width: 18px;
+  height: 18px;
+}
+
+/* Mid-range sizes */
+.mid-inner {
+  width: 60px;
+  height: 60px;
+}
+
+.mid-inner::after {
+  width: 30px;
+  height: 30px;
+}
+
+/* Bass/woofer sizes */
+.bass-inner {
+  width: 90px;
+  height: 90px;
+}
+
+.bass-inner::after {
+  width: 45px;
+  height: 45px;
+}
+
+/* Pulsing animation for speakers */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 30px rgba(96, 98, 113, 0.4);
+  }
+}
 
 .modern-title4 {
   margin-top: 70px;
