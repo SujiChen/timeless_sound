@@ -634,7 +634,7 @@ export default function AudioConverter() {
 
   return (
     <div className="converter-container">
-      <h2 className="converter-title">Browser Music Converter</h2>
+      {/* <h2 className="converter-title">Browser Music Converter</h2> */}
       <p className="converter-description">Transform your audio with creative effects – all processing happens in your browser!</p>
 
       <div className="file-row">
