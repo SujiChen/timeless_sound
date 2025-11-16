@@ -12,7 +12,7 @@ export default function Header() {
 
                 <nav className="nav">
                     <ul>
-                        <li><Link to="/Retro" className="nav-link">Retros</Link></li>
+                        <li><Link to="/Retro" className="nav-link">Retro</Link></li>
                         <li><Link to="/Modern" className="nav-link">Modern</Link></li>
                     </ul>
                 </nav>
