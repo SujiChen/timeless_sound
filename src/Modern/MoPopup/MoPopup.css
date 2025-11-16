@@ -1,6 +1,10 @@
 .mopop {
+  position: fixed !important;
+  z-index: 99999 !important;
   font-family: 'Lato', sans-serif;
   box-sizing: border-box;
+
+
 }
 
 .mopop * {
