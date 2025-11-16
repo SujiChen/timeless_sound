@@ -33,7 +33,7 @@ export default function Modern() {
         <div className="screen">
             <div className="desktop-apps" onClick={() => setShowTapePopup(true)}>
               <div className="app-icon music">
-                <span className="app-emoji ">♫</span>
+                <span className="app-emoji">♫</span>
                 {/* ♪ */}
                 <span className="app-label"></span>
               </div>
@@ -63,7 +63,8 @@ export default function Modern() {
           </div>
         </div>
       </div>
-{/* POPUP COMPONENT */}
+      
+      {/* POPUP COMPONENT */}
       {showTapePopup && <MoPopup closePopup={() => setShowTapePopup(false)} />}
     
     </div>
