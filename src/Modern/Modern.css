@@ -152,9 +152,16 @@
   background: radial-gradient(circle at 30% 30%, #333, #111);
 }
 
-.modern-title {
+
+.modern-title4 {
   margin-top: 70px;
   margin-bottom: 20px;
   font-size: 3rem;
   color: #ddd;
+  font-family: 'Playfair Display', sans-serif;
 }
+
+.body4{
+  font-family: 'Lato', sans-serif;
+}
+

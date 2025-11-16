@@ -6,8 +6,9 @@ export default function Modern() {
   return (
     <div className="modern-page">
       <Header />
-      <h1 className="modern-title">MODERN SOUND</h1>
 
+      <h1 className="modern-title4">MODERN SOUND</h1>
+      
       <div className="modern-layout">
         {/* Left Speaker */}
         <div className="modern-speaker">
