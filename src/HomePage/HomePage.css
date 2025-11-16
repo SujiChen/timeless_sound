@@ -26,18 +26,20 @@
 /* Timeline slider styling */
 .timeline-container {
   position: absolute;
-  bottom: 30px;
+  bottom: 15px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  align-items: center;
-  width: 60%;
+  align-items: baseline;
+  width: 80%;
   gap: 10px;
   z-index: 3;
+  
 }
 
 .timeline-label {
   font-weight: bold;
+  font-size: 25px;
   color: #fff;
   text-shadow: 1px 1px 3px #000;
 }
