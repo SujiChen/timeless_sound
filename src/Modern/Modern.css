@@ -19,25 +19,6 @@
   /* margin-top: 45px; */
 }
 
-/* Rainbow LED border effect */
-.led-border {
-  position: relative;
-  padding: 12px;
-  border-radius: 20px;
-  animation: led-flash 1.5s steps(7) infinite;
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
-}
-
-@keyframes led-flash {
-  0% { background: #ff0000; } /* Red */
-  14.28% { background: #ff7f00; } /* Orange */
-  28.56% { background: #ffff00; } /* Yellow */
-  42.84% { background: #00ff00; } /* Green */
-  57.12% { background: #0000ff; } /* Blue */
-  71.4% { background: #4b0082; } /* Indigo */
-  85.68% { background: #9400d3; } /* Violet */
-  100% { background: #ff0000; } /* Red */
-}
 
 /* Monitor */
 .modern-monitor {
@@ -371,4 +352,48 @@
   height: 100vh;
   width: 100%;
   background: radial-gradient(circle at 50% 20%, #ffffff, #bfbfbf 40%, #8d8d8d 80%);
+}
+
+.modern-monitor .screen {
+  position: relative;
+  box-shadow:
+    0 0 25px rgba(0, 180, 255, 0.4),
+    0 0 50px rgba(0, 180, 255, 0.3),
+    0 0 80px rgba(0, 180, 255, 0.2);
+}
+
+/* LED Strip Border */
+.modern-monitor .screen::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 16px;
+  border: 3px solid rgba(0, 180, 255, 0.7);
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.modern-speaker {
+  position: relative;
+  box-shadow:
+    0 0 25px rgba(255, 0, 200, 0.4),
+    0 0 50px rgba(255, 0, 200, 0.3),
+    0 0 80px rgba(255, 0, 200, 0.2);
+}
+
+.modern-speaker::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 18px;
+  border: 3px solid rgba(255, 0, 200, 0.7);
+  filter: blur(5px);
+  pointer-events: none;
+  z-index: 0;
 }
