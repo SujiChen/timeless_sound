@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Retro.css";
 import Header from "../Header/Header";
+import RePopup from "./RePopup/RePopup";   // ← USE THIS POPUP
 
 export default function Retro() {
+  const [showTapePopup, setShowTapePopup] = useState(false);
+ const openPopup = () => setShowTapePopup(true);
+  const closePopup = () => setShowTapePopup(false);
   return (
     <div className="retro-page">
       <Header />
       <h1 className="retro-title1">RETRO VIBES</h1>
+
       <div className="boombox">
         {/* Handle */}
         <div className="handle"></div>
+
         {/* Antenna */}
         <div className="antenna"></div>
 
@@ -28,7 +34,11 @@ export default function Retro() {
             </div>
           </div>
 
-          <div className="tape-deck-container">
+          {/* CLICK TO OPEN POPUP */}
+          <div
+            className="tape-deck-container"
+            onClick={() => setShowTapePopup(true)}
+          >
             <div className="tape-deck">
               <div className="spool"></div>
               <div className="spool"></div>
@@ -42,7 +52,7 @@ export default function Retro() {
           </div>
         </div>
 
-        {/* Bottom controls row */}
+        {/* Bottom controls */}
         <div className="controls">
           <div className="buttons">
             <div className="btn red"></div>
@@ -69,6 +79,9 @@ export default function Retro() {
           <div className="bar"></div>
         </div>
       </div>
+
+      {/* POPUP COMPONENT */}
+      {showTapePopup && <RePopup closePopup={() => setShowTapePopup(false)} />}
     </div>
   );
 }

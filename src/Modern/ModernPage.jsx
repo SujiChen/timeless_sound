@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Modern.css";
 import Header from '../Header/Header';
+import MoPopup from "./MoPopup/MoPopup";   // ← USE THIS POPUP
 
 export default function Modern() {
+    const [showTapePopup, setShowTapePopup] = useState(false);
+    const openPopup = () => setShowTapePopup(true);
+    const closePopup = () => setShowTapePopup(false);
   return (
     <div className="modern-page">
       <Header />
@@ -25,8 +29,9 @@ export default function Modern() {
 
         {/* Monitor */}
         <div className="modern-monitor">
+
         <div className="screen">
-            <div className="desktop-apps">
+            <div className="desktop-apps" onClick={() => setShowTapePopup(true)}>
               <div className="app-icon music">
                 <span className="app-emoji">♫</span>
                 {/* ♪ */}
@@ -58,7 +63,9 @@ export default function Modern() {
           </div>
         </div>
       </div>
-
+{/* POPUP COMPONENT */}
+      {showTapePopup && <MoPopup closePopup={() => setShowTapePopup(false)} />}
+    
     </div>
   );
 }
