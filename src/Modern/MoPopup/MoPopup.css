@@ -19,7 +19,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 9999;
 }
 
 /* Card container */
@@ -29,6 +29,7 @@
   width: 700px;
   max-width: 90%;
   max-height: 90vh;
+  /* margin-top: 40px; */
   overflow-y: auto;
   overflow-x: hidden;
   border-radius: 15px;

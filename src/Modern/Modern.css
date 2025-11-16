@@ -19,6 +19,26 @@
   /* margin-top: 45px; */
 }
 
+/* Rainbow LED border effect */
+.led-border {
+  position: relative;
+  padding: 12px;
+  border-radius: 20px;
+  animation: led-flash 1.5s steps(7) infinite;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+}
+
+@keyframes led-flash {
+  0% { background: #ff0000; } /* Red */
+  14.28% { background: #ff7f00; } /* Orange */
+  28.56% { background: #ffff00; } /* Yellow */
+  42.84% { background: #00ff00; } /* Green */
+  57.12% { background: #0000ff; } /* Blue */
+  71.4% { background: #4b0082; } /* Indigo */
+  85.68% { background: #9400d3; } /* Violet */
+  100% { background: #ff0000; } /* Red */
+}
+
 /* Monitor */
 .modern-monitor {
   width: 650px;
@@ -209,7 +229,7 @@
     );
   border-radius: 14px;
   pointer-events: none;
-  z-index: 1;
+  z-index: 10;
 }
 
 /* Outer speaker circles with pulsing animation */
@@ -223,7 +243,7 @@
   justify-content: center;
   position: relative;
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
-  z-index: 2;
+  z-index: 20;
 }
 
 /* Add mesh/grille texture to speaker surrounds */
@@ -339,7 +359,7 @@
   margin-top: 70px;
   margin-bottom: 20px;
   font-size: 3rem;
-  color: #ddd;
+  color: #000000;
   font-family: 'Playfair Display', sans-serif;
 }
 
@@ -347,3 +367,8 @@
   font-family: 'Lato', sans-serif;
 }
 
+.modern-page {
+  height: 100vh;
+  width: 100%;
+  background: radial-gradient(circle at 50% 20%, #ffffff, #bfbfbf 40%, #8d8d8d 80%);
+}

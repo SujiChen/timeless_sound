@@ -15,7 +15,7 @@ export default function Modern() {
       
       <div className="modern-layout">
         {/* Left Speaker */}
-        <div className="modern-speaker">
+        <div className="modern-speaker led-border">
            <div className="speaker-circle tweeter">
             <div className="speaker-inner tweeter-inner"></div>
           </div>
@@ -28,7 +28,7 @@ export default function Modern() {
          </div>
 
         {/* Monitor */}
-        <div className="modern-monitor">
+        <div className="modern-monitor led-border">
 
         <div className="screen">
             <div className="desktop-apps" onClick={() => setShowTapePopup(true)}>
@@ -51,7 +51,7 @@ export default function Modern() {
         </div>
 
         {/* Right Speaker */}
-        <div className="modern-speaker">
+        <div className="modern-speaker led-border">
            <div className="speaker-circle tweeter">
             <div className="speaker-inner tweeter-inner"></div>
           </div>

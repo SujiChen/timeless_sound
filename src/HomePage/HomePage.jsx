@@ -14,7 +14,7 @@ export default function HomePage() {
 
       <div
         className="page retro"
-        style={{ width: `${ratio}%` }}
+        style={{ width: `${100 - ratio}%` }}
       >
         <RetroPage />
       </div>
