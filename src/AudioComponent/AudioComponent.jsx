@@ -1,14 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 /**
- * AudioPlayerCore - Minimal audio player with reusable functions
- * 
- * This component provides all the core audio functionality without heavy styling.
- * You can extract and use individual functions in your Modern/Retro pages.
+ * useAudioPlayer - Custom hook that provides all audio functionality
+ * Import and use this hook in your components instead of AudioPlayerCore
  */
-
-export default function AudioPlayerCore() {
-  // ===== STATE =====
+export default function useAudioPlayer() {
+  // State
   const [audioFile, setAudioFile] = useState(null);
   const [audioBuffer, setAudioBuffer] = useState(null);
   const [processedUrl, setProcessedUrl] = useState(null);
@@ -23,22 +20,18 @@ export default function AudioPlayerCore() {
   const audioRef = useRef(null);
   const intervalRef = useRef(null);
 
-  // ===== 1. FILE UPLOAD HANDLER =====
-  // Usage: Attach to file input onChange
-  // Purpose: Loads audio file and decodes it for processing
+  // File upload handler
   async function handleFileUpload(file) {
     if (!file) return;
     
     try {
       setAudioFile(file);
       
-      // Decode audio for processing
       const arrayBuffer = await file.arrayBuffer();
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
       const decoded = await audioContext.decodeAudioData(arrayBuffer);
       setAudioBuffer(decoded);
       
-      // Create URL for playback
       const url = URL.createObjectURL(file);
       setOriginalUrl(url);
       
@@ -49,9 +42,7 @@ export default function AudioPlayerCore() {
     }
   }
 
-  // ===== 2. PLAY FUNCTION =====
-  // Usage: Attach to play button onClick
-  // Purpose: Starts audio playback
+  // Playback controls
   function play() {
     if (audioRef.current) {
       audioRef.current.play();
@@ -60,9 +51,6 @@ export default function AudioPlayerCore() {
     }
   }
 
-  // ===== 3. PAUSE FUNCTION =====
-  // Usage: Attach to pause button onClick
-  // Purpose: Pauses audio playback
   function pause() {
     if (audioRef.current) {
       audioRef.current.pause();
@@ -71,20 +59,10 @@ export default function AudioPlayerCore() {
     }
   }
 
-  // ===== 4. TOGGLE PLAY/PAUSE =====
-  // Usage: Single button that switches between play/pause
-  // Purpose: Convenient play/pause toggle
   function togglePlayPause() {
-    if (isPlaying) {
-      pause();
-    } else {
-      play();
-    }
+    isPlaying ? pause() : play();
   }
 
-  // ===== 5. SKIP FORWARD =====
-  // Usage: Attach to skip forward button
-  // Purpose: Skips ahead by X seconds (default 10)
   function skipForward(seconds = 10) {
     if (audioRef.current) {
       audioRef.current.currentTime = Math.min(
@@ -94,9 +72,6 @@ export default function AudioPlayerCore() {
     }
   }
 
-  // ===== 6. SKIP BACKWARD =====
-  // Usage: Attach to skip backward button
-  // Purpose: Skips back by X seconds (default 10)
   function skipBackward(seconds = 10) {
     if (audioRef.current) {
       audioRef.current.currentTime = Math.max(
@@ -106,9 +81,6 @@ export default function AudioPlayerCore() {
     }
   }
 
-  // ===== 7. SEEK TO TIME =====
-  // Usage: Attach to progress bar onChange
-  // Purpose: Jump to specific time in audio
   function seekTo(timeInSeconds) {
     if (audioRef.current) {
       audioRef.current.currentTime = timeInSeconds;
@@ -116,9 +88,6 @@ export default function AudioPlayerCore() {
     }
   }
 
-  // ===== 8. VOLUME CONTROL =====
-  // Usage: Attach to volume slider onChange
-  // Purpose: Adjusts playback volume (0 to 1)
   function changeVolume(volumeLevel) {
     if (audioRef.current) {
       const vol = Math.max(0, Math.min(1, volumeLevel));
@@ -127,32 +96,13 @@ export default function AudioPlayerCore() {
     }
   }
 
-  // ===== 9. MUTE/UNMUTE =====
-  // Usage: Attach to mute button
-  // Purpose: Toggles mute
   function toggleMute() {
     if (audioRef.current) {
       audioRef.current.muted = !audioRef.current.muted;
     }
   }
 
-  // ===== 10. GET TIME REMAINING =====
-  // Usage: Display time left in song
-  // Purpose: Returns formatted time remaining
-  function getTimeRemaining() {
-    const remaining = duration - currentTime;
-    return formatTime(remaining);
-  }
-
-  // ===== 11. GET CURRENT TIME FORMATTED =====
-  // Usage: Display current position
-  // Purpose: Returns formatted current time
-  function getCurrentTimeFormatted() {
-    return formatTime(currentTime);
-  }
-
-  // ===== 12. FORMAT TIME HELPER =====
-  // Purpose: Converts seconds to MM:SS format
+  // Time formatting
   function formatTime(seconds) {
     if (isNaN(seconds)) return '0:00';
     const mins = Math.floor(seconds / 60);
@@ -160,10 +110,16 @@ export default function AudioPlayerCore() {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   }
 
-  // ===== 13A. APPLY RETRO EFFECT =====
-  // Usage: Process audio with retro/vintage effects
-  // Purpose: Applies retro effect and creates new audio URL
-  // Effects: pcspeaker, 8bit, arcade, fmsynth, 16bit, lofi, bardcore
+  function getTimeRemaining() {
+    const remaining = duration - currentTime;
+    return formatTime(remaining);
+  }
+
+  function getCurrentTimeFormatted() {
+    return formatTime(currentTime);
+  }
+
+  // Apply retro effect
   async function applyRetroEffect(effectName, playbackRate = 1) {
     if (!audioBuffer) return;
     
@@ -213,10 +169,7 @@ export default function AudioPlayerCore() {
     }
   }
 
-  // ===== 13B. APPLY MODERN EFFECT =====
-  // Usage: Process audio with modern effects
-  // Purpose: Applies modern effect and creates new audio URL
-  // Effects: bassboosted, synthwave, nightcore, slowedreverb, orchestral
+  // Apply modern effect
   async function applyModernEffect(effectName, playbackRate = 1) {
     if (!audioBuffer) return;
     
@@ -264,9 +217,7 @@ export default function AudioPlayerCore() {
     }
   }
 
-  // ===== 14. DOWNLOAD AUDIO =====
-  // Usage: Attach to download button
-  // Purpose: Downloads current audio (processed or original)
+  // Download audio
   function downloadAudio(format = 'wav') {
     const url = processedUrl || originalUrl;
     if (!url) return;
@@ -279,9 +230,7 @@ export default function AudioPlayerCore() {
     a.click();
   }
 
-  // ===== 15. RESET/CLEAR =====
-  // Usage: Clear all audio and start over
-  // Purpose: Resets player to initial state
+  // Reset
   function reset() {
     pause();
     if (originalUrl) URL.revokeObjectURL(originalUrl);
@@ -297,9 +246,7 @@ export default function AudioPlayerCore() {
     setIsPlaying(false);
   }
 
-  // ===== 16. SWITCH TO PROCESSED/ORIGINAL =====
-  // Usage: Toggle between processed and original audio
-  // Purpose: Switches audio source
+  // Switch audio source
   function useProcessedAudio() {
     if (processedUrl && audioRef.current) {
       const wasPlaying = isPlaying;
@@ -330,7 +277,7 @@ export default function AudioPlayerCore() {
     }
   }
 
-  // ===== TIME TRACKING =====
+  // Time tracking
   function startTimeTracking() {
     if (intervalRef.current) return;
     intervalRef.current = setInterval(() => {
@@ -370,7 +317,9 @@ export default function AudioPlayerCore() {
     };
   }, [originalUrl, processedUrl]);
 
-  // ===== RETRO EFFECT IMPLEMENTATIONS =====
+  // Effect implementations (all the audio processing functions)
+  // ... (I'll include all the effect functions from AudioPlayerCore)
+
   async function effectPCSpeaker(ctx, src) {
     const beeper = ctx.createWaveShaper();
     const curve = new Float32Array(2048);
@@ -598,7 +547,6 @@ export default function AudioPlayerCore() {
     wet.connect(ctx.destination);
   }
 
-  // ===== MODERN EFFECT IMPLEMENTATIONS =====
   async function effectBassBoosted(ctx, src) {
     const subBass = ctx.createBiquadFilter();
     subBass.type = "lowshelf";
@@ -851,118 +799,36 @@ export default function AudioPlayerCore() {
     return new Blob([view], { type: "audio/wav" });
   }
 
-  // ===== DEMO UI (MINIMAL STYLING) =====
-  return (
-    <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto', fontFamily: 'sans-serif' }}>
-      <h2>Audio Player Core Functions Demo</h2>
-      
-      {/* 1. FILE UPLOAD */}
-      <div style={{ marginBottom: '15px', padding: '10px', border: '1px solid #ccc' }}>
-        <h3>1. Upload File</h3>
-        <input type="file" accept="audio/*" onChange={(e) => handleFileUpload(e.target.files[0])} />
-        {audioFile && <div>Loaded: {audioFile.name}</div>}
-      </div>
-
-      {/* 2-3. PLAY/PAUSE */}
-      <div style={{ marginBottom: '15px', padding: '10px', border: '1px solid #ccc' }}>
-        <h3>2-4. Playback Controls</h3>
-        <button onClick={play} disabled={!originalUrl}>▶ Play</button>
-        <button onClick={pause} disabled={!originalUrl}>⏸ Pause</button>
-        <button onClick={togglePlayPause} disabled={!originalUrl}>⏯ Toggle</button>
-        <div>Status: {isPlaying ? 'Playing' : 'Paused'}</div>
-      </div>
-
-      {/* 5-6. SKIP CONTROLS */}
-      <div style={{ marginBottom: '15px', padding: '10px', border: '1px solid #ccc' }}>
-        <h3>5-6. Skip Controls</h3>
-        <button onClick={() => skipBackward(10)}>⏮ -10s</button>
-        <button onClick={() => skipForward(10)}>⏭ +10s</button>
-      </div>
-
-      {/* 7. SEEK BAR */}
-      <div style={{ marginBottom: '15px', padding: '10px', border: '1px solid #ccc' }}>
-        <h3>7. Seek Bar</h3>
-        <input 
-          type="range" 
-          min="0" 
-          max={duration || 0} 
-          value={currentTime} 
-          onChange={(e) => seekTo(parseFloat(e.target.value))}
-          style={{ width: '100%' }}
-        />
-      </div>
-
-      {/* 8-9. VOLUME */}
-      <div style={{ marginBottom: '15px', padding: '10px', border: '1px solid #ccc' }}>
-        <h3>8-9. Volume Control</h3>
-        <input 
-          type="range" 
-          min="0" 
-          max="1" 
-          step="0.01"
-          value={volume} 
-          onChange={(e) => changeVolume(parseFloat(e.target.value))}
-          style={{ width: '100%' }}
-        />
-        <button onClick={toggleMute}>🔇 Mute/Unmute</button>
-        <div>Volume: {Math.round(volume * 100)}%</div>
-      </div>
-
-      {/* 10-11. TIME DISPLAY */}
-      <div style={{ marginBottom: '15px', padding: '10px', border: '1px solid #ccc' }}>
-        <h3>10-11. Time Display</h3>
-        <div>Current: {getCurrentTimeFormatted()}</div>
-        <div>Remaining: {getTimeRemaining()}</div>
-        <div>Duration: {formatTime(duration)}</div>
-      </div>
-
-      {/* 13A. RETRO EFFECTS */}
-      <div style={{ marginBottom: '15px', padding: '10px', border: '1px solid #ccc' }}>
-        <h3>13A. Apply Retro Effects</h3>
-        <button onClick={() => applyRetroEffect('pcspeaker', 1)} disabled={!audioBuffer || processing}>💾 PC Speaker</button>
-        <button onClick={() => applyRetroEffect('8bit', 1)} disabled={!audioBuffer || processing}>🎮 8-bit</button>
-        <button onClick={() => applyRetroEffect('arcade', 1)} disabled={!audioBuffer || processing}>🏁 Arcade</button>
-        <button onClick={() => applyRetroEffect('fmsynth', 1)} disabled={!audioBuffer || processing}>🧿 FM Synth</button>
-        <button onClick={() => applyRetroEffect('16bit', 1)} disabled={!audioBuffer || processing}>🕹️ 16-bit</button>
-        <button onClick={() => applyRetroEffect('lofi', 1)} disabled={!audioBuffer || processing}>📻 Lofi</button>
-        <button onClick={() => applyRetroEffect('bardcore', 0.92)} disabled={!audioBuffer || processing}>🏰 Bardcore</button>
-        {processing && <div>Processing...</div>}
-        {activeEffect && <div>Active: {activeEffect}</div>}
-      </div>
-
-      {/* 13B. MODERN EFFECTS */}
-      <div style={{ marginBottom: '15px', padding: '10px', border: '1px solid #ccc' }}>
-        <h3>13B. Apply Modern Effects</h3>
-        <button onClick={() => applyModernEffect('bassboosted', 1)} disabled={!audioBuffer || processing}>🔊 Bass Boosted</button>
-        <button onClick={() => applyModernEffect('synthwave', 1)} disabled={!audioBuffer || processing}>📼 Synthwave</button>
-        <button onClick={() => applyModernEffect('nightcore', 1.3)} disabled={!audioBuffer || processing}>⚡ Nightcore</button>
-        <button onClick={() => applyModernEffect('slowedreverb', 0.85)} disabled={!audioBuffer || processing}>🌙 Slowed + Reverb</button>
-        <button onClick={() => applyModernEffect('orchestral', 1)} disabled={!audioBuffer || processing}>🎻 Orchestral</button>
-        {processing && <div>Processing...</div>}
-      </div>
-
-      {/* 14. DOWNLOAD */}
-      <div style={{ marginBottom: '15px', padding: '10px', border: '1px solid #ccc' }}>
-        <h3>14. Download</h3>
-        <button onClick={() => downloadAudio('wav')} disabled={!originalUrl}>Download WAV</button>
-        <button onClick={() => downloadAudio('mp3')} disabled={!originalUrl}>Download MP3</button>
-      </div>
-
-      {/* 15. RESET */}
-      <div style={{ marginBottom: '15px', padding: '10px', border: '1px solid #ccc' }}>
-        <h3>15. Reset</h3>
-        <button onClick={reset}>Clear All</button>
-      </div>
-
-      {/* 16. SWITCH AUDIO SOURCE */}
-      <div style={{ marginBottom: '15px', padding: '10px', border: '1px solid #ccc' }}>
-        <h3>16. Switch Audio Source</h3>
-        <button onClick={useOriginalAudio} disabled={!originalUrl}>Use Original</button>
-        <button onClick={useProcessedAudio} disabled={!processedUrl}>Use Processed</button>
-      </div>
-
-      {/* Hidden audio element */}
-      <audio ref={audioRef} src={originalUrl} />
-    </div>
-  );
+  // Return all functions and state
+  return {
+    audioRef,
+    audioFile,
+    audioBuffer,
+    processedUrl,
+    originalUrl,
+    isPlaying,
+    currentTime,
+    duration,
+    volume,
+    activeEffect,
+    processing,
+    handleFileUpload,
+    play,
+    pause,
+    togglePlayPause,
+    skipForward,
+    skipBackward,
+    seekTo,
+    changeVolume,
+    toggleMute,
+    formatTime,
+    getTimeRemaining,
+    getCurrentTimeFormatted,
+    applyRetroEffect,
+    applyModernEffect,
+    downloadAudio,
+    reset,
+    useProcessedAudio,
+    useOriginalAudio,
+  };
 }
