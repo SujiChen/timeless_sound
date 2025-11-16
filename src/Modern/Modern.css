@@ -211,7 +211,7 @@
   border-radius: 50%;
   border: 3px solid rgba(255, 255, 255, 0.1);
   margin: 15px 0;
-  animation: pulse 2s ease-in-out infinite;
+  animation: pulse 1.5s ease-in-out infinite;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -243,21 +243,21 @@
   width: 60px;
   height: 60px;
   background: radial-gradient(circle at 35% 35%, #555, #2a2a2a);
-  animation-delay: 0s;
+
 }
 
 .mid {
   width: 100px;
   height: 100px;
   background: radial-gradient(circle at 35% 35%, #4a4a4a, #252525);
-  animation-delay: 0.3s;
+ 
 }
 
 .bass {
   width: 140px;
   height: 140px;
   background: radial-gradient(circle at 35% 35%, #3f3f3f, #1a1a1a);
-  animation-delay: 0.6s;
+ 
 }
 
 /* Inner speaker cones (the actual driver) */
